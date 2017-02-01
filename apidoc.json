@@ -1,0 +1,5 @@
+{
+  "name": "Oauth2 Service",
+  "version": "1.0.0",
+  "description": "Microservice implementation of oauth2 protocol."
+}

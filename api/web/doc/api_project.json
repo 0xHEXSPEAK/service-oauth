@@ -1,0 +1,1 @@
+{  "name": "Oauth2 Service",  "version": "1.0.0",  "description": "Microservice implementation of oauth2 protocol.",  "sampleUrl": false,  "apidoc": "0.2.0",  "generator": {    "name": "apidoc",    "time": "2017-02-01T22:41:02.050Z",    "url": "http://apidocjs.com",    "version": "0.16.1"  }}
