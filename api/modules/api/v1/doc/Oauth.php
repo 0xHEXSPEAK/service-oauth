@@ -1,6 +1,4 @@
 <?php
-
-
 /**
  * @api {post} /token Obtain a new token
  * @apiVersion 1.0.0
@@ -23,7 +21,6 @@
  *      "token_type":"example",
  *      "expires_in":3600,
  *      "refresh_token":"tGzv3JOkF0XG5Qx2TlKWIA",
- *      "example_parameter":"example_value"
  *  }
  *
  * @apiErrorExample {json} Error-Response:

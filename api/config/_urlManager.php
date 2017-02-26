@@ -7,7 +7,10 @@ return [
     'rules' => [
         [
             'class' => 'yii\rest\UrlRule',
-            'controller' => 'api/v1/instance',
+            'controller' => ['v1/oauth' => 'api/v1/o-auth'],
+            'extraPatterns' => [
+                'POST token' => 'token',
+            ],
         ]
     ]
 ];
