@@ -9,6 +9,11 @@ use api\modules\api\v1\models\ClientCredentials;
 use api\modules\api\v1\models\resource\AccessTokenResource;
 use api\modules\api\v1\services\OAuthInterface;
 
+/**
+ * Class OAuthController
+ *
+ * @package api\modules\api\v1\controllers
+ */
 class OAuthController extends BaseController
 {
     /**
