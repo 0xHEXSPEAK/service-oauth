@@ -3,6 +3,7 @@
 namespace api\modules\api\v1\models\repository;
 
 use yii\db\ActiveQuery;
+use api\modules\api\v1\models\GrantType;
 use api\modules\api\v1\models\AccessToken;
 use cheatsheet\Time;
 
@@ -24,7 +25,7 @@ class AccessTokenRepository extends ActiveQuery
     public function generate(
         $clientId,
         $scopes = [],
-        $type   = 'client_credentials'
+        $type   = GrantType::CLIENT_CREDENTIALS
     ) {
         $bytes = openssl_random_pseudo_bytes(AccessToken::TOKEN_BYTES);
         $token = hash(AccessToken::CRYPT_ALGORITHM, uniqid($bytes, true));

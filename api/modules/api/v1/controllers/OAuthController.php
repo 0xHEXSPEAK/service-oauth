@@ -3,7 +3,8 @@
 namespace api\modules\api\v1\controllers;
 
 use yii\base\Module;
-use yii\web\Request;
+use yii\web\NotFoundHttpException;
+use api\modules\api\v1\exceptions\ClientNotFound;
 use api\modules\api\v1\models\AccessToken;
 use api\modules\api\v1\models\ClientCredentials;
 use api\modules\api\v1\models\resource\AccessTokenResource;
@@ -57,44 +58,19 @@ class OAuthController extends BaseController
     }
 
     /**
-     * @return AccessToken
+     * @return AccessTokenResource
+     * @throws NotFoundHttpException
      */
     public function actionToken()
     {
-        $request = \Yii::$app->getRequest();
-        if ($this->isClient($request)) {
-            $client = ClientCredentials::find()->isClientExist(
-                $request->getBodyParam('client_id'),
-                $request->getBodyParam('client_secret')
+        try {
+            return $this->oauthService->createAccessToken(
+                \Yii::$app->getRequest(),
+                AccessToken::find(),
+                ClientCredentials::find()
             );
-
-            if ($this->isExists($client)) {
-                return new AccessTokenResource(
-                    AccessToken::find()->generate($client->id, ['whole_world'])
-                );
-            }
+        } catch (ClientNotFound $e) {
+            throw new NotFoundHttpException($e->getMessage(), 404);
         }
-
-        // TODO: password grant_type
-    }
-
-    /**
-     * @param Request $request
-     * @return bool
-     */
-    private function isClient(Request $request)
-    {
-        return $request->getBodyParam('grant_type') === ClientCredentials::CRED_CLIENT;
-    }
-
-    /**
-     * Checks whether the client is exists
-     *
-     * @param ClientCredentials $client
-     * @return bool
-     */
-    private function isExists(ClientCredentials $client)
-    {
-        return isset($client);
     }
 }

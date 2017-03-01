@@ -12,8 +12,20 @@ use api\modules\api\v1\models\repository\AccessTokenRepository;
  */
 class AccessToken extends ActiveRecord
 {
+    /**
+     * Defines the number of bytes used by openssl_random_pseudo_bytes
+     * while generating an access_token hash
+     *
+     * @var string
+     */
     const TOKEN_BYTES = 8;
 
+    /**
+     * Defines the crypt algorithm used by hash function
+     * while generating a hash value (message digest)
+     *
+     * @var string
+     */
     const CRYPT_ALGORITHM = 'sha256';
 
     /**
