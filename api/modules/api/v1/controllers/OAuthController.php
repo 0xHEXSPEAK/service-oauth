@@ -2,13 +2,15 @@
 
 namespace api\modules\api\v1\controllers;
 
+use yii;
 use yii\base\Module;
+use yii\base\Exception;
+use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 use api\modules\api\v1\exceptions\ClientNotFound;
-use api\modules\api\v1\models\AccessToken;
-use api\modules\api\v1\models\ClientCredentials;
 use api\modules\api\v1\models\resource\AccessTokenResource;
 use api\modules\api\v1\services\OAuthInterface;
+use api\modules\api\v1\models\factories\GrantTypeFactory;
 
 /**
  * Class OAuthController
@@ -65,12 +67,13 @@ class OAuthController extends BaseController
     {
         try {
             return $this->oauthService->createAccessToken(
-                \Yii::$app->getRequest(),
-                AccessToken::find(),
-                ClientCredentials::find()
+                new GrantTypeFactory(),
+                Yii::$app->getRequest()
             );
         } catch (ClientNotFound $e) {
             throw new NotFoundHttpException($e->getMessage(), 404);
+        } catch (Exception $e) {
+            throw new yii\web\BadRequestHttpException($e->getMessage());
         }
     }
 }

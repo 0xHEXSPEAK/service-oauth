@@ -33,7 +33,7 @@ class AccessToken extends ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%access_token}}';
+        return '{{%access_tokens}}';
     }
 
     /**

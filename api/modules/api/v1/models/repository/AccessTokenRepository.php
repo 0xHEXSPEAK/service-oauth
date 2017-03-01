@@ -23,7 +23,8 @@ class AccessTokenRepository extends ActiveQuery
      * @return AccessToken
      */
     public function generate(
-        $clientId,
+        $clientId = null,
+        $userId = null,
         $scopes = [],
         $type   = GrantType::CLIENT_CREDENTIALS
     ) {
@@ -32,6 +33,7 @@ class AccessTokenRepository extends ActiveQuery
 
         $model = new AccessToken([
             'client_id' => $clientId,
+            'user_id' => $userId,
             'type' => $type,
             'token' => $token,
             'expires_in' => time() + Time::SECONDS_IN_A_WEEK * 2,
