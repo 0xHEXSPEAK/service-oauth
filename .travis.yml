@@ -1,8 +1,27 @@
-language: php
 sudo: required
+
+language: php
 
 php:
   - '7.1'
+
+env:
+  DOCKER_COMPOSE_VERSION: 1.11.1
+
+services:
+  - docker
+
+before_install:
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  - cp ./.env.dist ./.env
+  - docker-compose build
+  - docker-compose up -d
+  - composer install --prefer-dist --optimize-autoloader --ignore-platform-reqs
+  - sleep 10
+  - docker-compose run app console/yii app/setup --interactive=0
 
 before_script:
   - composer require yiisoft/yii2-codeception
