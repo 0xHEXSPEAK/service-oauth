@@ -13,7 +13,7 @@ before_script:
   - composer require satooshi/php-coveralls
 
 script:
-  - tests/unit.sh
+  - tests/unit.sh --coverage --coverage-xml
 
 after_success:
   - php vendor/bin/coveralls -v
