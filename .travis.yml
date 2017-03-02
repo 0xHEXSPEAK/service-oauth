@@ -14,7 +14,7 @@ before_script:
   - mkdir -p build/logs
 
 script:
-  - tests/unit.sh --coverage-xml ../build/logs/clover.xml
+  - tests/unit.sh
 
 after_success:
   - php vendor/bin/coveralls -v
