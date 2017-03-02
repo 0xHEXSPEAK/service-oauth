@@ -1,0 +1,12 @@
+language: php
+sudo: required
+php:
+  - '7.0'
+  - '7.1'
+before_script:
+  - composer require yiisoft/yii2-codeception
+  - composer require codeception/base
+  - composer require codeception/verify
+  - composer require codeception/specify
+  - composer require codeception/codeception
+script: tests/unit.sh
