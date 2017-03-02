@@ -11,7 +11,6 @@ before_script:
   - composer require codeception/specify
   - composer require codeception/codeception
   - composer require satooshi/php-coveralls
-  - mkdir -p build/logs
 
 script:
   - tests/unit.sh
