@@ -1,3 +1,4 @@
+language: php
 sudo: required
 
 language: php
@@ -33,6 +34,3 @@ before_script:
 
 script:
   - tests/unit.sh
-
-after_success:
-  - php vendor/bin/coveralls -v
