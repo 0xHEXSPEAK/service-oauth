@@ -22,7 +22,7 @@ interface OAuthInterface
      * @return AccessTokenResource
      */
     public function createAccessToken(
-        GrantTypeFactory $factory,
-        Request $request
+        Request $request,
+        GrantTypeFactory $factory
     );
 }

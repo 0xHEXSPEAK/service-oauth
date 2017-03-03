@@ -76,8 +76,8 @@ class OAuthController extends BaseController
         try {
             return new AccessTokenResource(
                 $this->oauthService->createAccessToken(
-                    new GrantTypeFactory(),
-                    Yii::$app->getRequest()
+                    Yii::$app->getRequest(),
+                    new GrantTypeFactory()
                 )
             );
         } catch (ClientNotFound $e) {

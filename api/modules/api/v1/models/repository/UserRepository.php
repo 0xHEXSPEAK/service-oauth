@@ -21,7 +21,7 @@ class UserRepository extends ActiveQuery
      * @param string $password
      * @return array|null|User
      */
-    public function isUserExists($username, $password)
+    public function findByUserCredentials($username, $password)
     {
         return $this->where([
             'username' => $username,

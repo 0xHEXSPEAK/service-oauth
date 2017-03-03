@@ -44,7 +44,7 @@ class ClientCredentialStrategy extends AbstractStrategy
      */
     public function generate()
     {
-        $client = $this->clientCredentialsRepository->isClientExist(
+        $client = $this->clientCredentialsRepository->findByClientCredentials(
             $this->request->getBodyParam('client_id'),
             $this->request->getBodyParam('client_secret')
         );

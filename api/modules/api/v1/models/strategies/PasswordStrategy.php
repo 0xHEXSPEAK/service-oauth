@@ -44,7 +44,7 @@ class PasswordStrategy extends AbstractStrategy
      */
     public function generate()
     {
-        $user = $this->userRepository->isUserExists(
+        $user = $this->userRepository->findByUserCredentials(
             $this->request->getBodyParam('username'),
             $this->request->getBodyParam('password')
         );

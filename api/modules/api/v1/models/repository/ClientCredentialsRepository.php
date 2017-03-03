@@ -20,7 +20,7 @@ class ClientCredentialsRepository extends ActiveQuery
      * @param string $secret
      * @return ClientCredentials|array|null|
      */
-    public function isClientExist($id, $secret)
+    public function findByClientCredentials($id, $secret)
     {
         return $this->where([
             'client_id' => $id,

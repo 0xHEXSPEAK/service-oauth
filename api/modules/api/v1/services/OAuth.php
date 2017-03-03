@@ -18,8 +18,8 @@ class OAuth implements OAuthInterface
      * @inheritdoc
      */
     public function createAccessToken(
-        GrantTypeFactory $factory,
-        Request $request
+        Request $request,
+        GrantTypeFactory $factory
     ) {
         switch ($request->getBodyParam('grant_type')) {
             case GrantType::CLIENT_CREDENTIALS:
