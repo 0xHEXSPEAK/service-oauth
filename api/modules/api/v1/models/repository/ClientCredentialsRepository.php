@@ -14,7 +14,7 @@ class ClientCredentialsRepository extends ActiveQuery
 {
     /**
      * Checks whether the given client credentials
-     * exits in storage
+     * exists in storage
      *
      * @param string $id
      * @param string $secret

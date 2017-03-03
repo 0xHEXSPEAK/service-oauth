@@ -2,6 +2,9 @@
 
 use yii\db\Migration;
 
+/**
+ * Class m170226_154156_access_token
+ */
 class m170226_154156_access_token extends Migration
 {
     /**

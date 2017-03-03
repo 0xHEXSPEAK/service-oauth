@@ -2,12 +2,15 @@
 
 namespace api\modules\api\v1\controllers;
 
+use yii;
 use yii\base\Module;
-use yii\web\Request;
-use api\modules\api\v1\models\AccessToken;
-use api\modules\api\v1\models\ClientCredentials;
-use api\modules\api\v1\models\resource\AccessTokenResource;
+use yii\web\NotFoundHttpException;
+use yii\web\BadRequestHttpException;
+use api\modules\api\v1\exceptions\UserNotFound;
+use api\modules\api\v1\exceptions\ClientNotFound;
 use api\modules\api\v1\services\OAuthInterface;
+use api\modules\api\v1\models\resource\AccessTokenResource;
+use api\modules\api\v1\models\factories\GrantTypeFactory;
 
 /**
  * Class OAuthController
@@ -17,12 +20,16 @@ use api\modules\api\v1\services\OAuthInterface;
 class OAuthController extends BaseController
 {
     /**
-     * @var string
+     * Defines an access token model class
+     *
+     * @var string $modelClass
      */
     public $modelClass = 'api\modules\api\v1\models\AccessToken';
 
     /**
-     * @var OAuthInterface
+     * Defines the service that access an oauth functionality
+     *
+     * @var OAuthInterface $oauthService
      */
     protected $oauthService;
 
@@ -57,44 +64,26 @@ class OAuthController extends BaseController
     }
 
     /**
-     * @return AccessToken
+     * Generates an access token for provided
+     * client_id and client_secret keys
+     *
+     * @return AccessTokenResource
+     * @throws BadRequestHttpException
+     * @throws NotFoundHttpException
      */
     public function actionToken()
     {
-        $request = \Yii::$app->getRequest();
-        if ($this->isClient($request)) {
-            $client = ClientCredentials::find()->isClientExist(
-                $request->getBodyParam('client_id'),
-                $request->getBodyParam('client_secret')
+        try {
+            return new AccessTokenResource(
+                $this->oauthService->createAccessToken(
+                    new GrantTypeFactory(),
+                    Yii::$app->getRequest()
+                )
             );
-
-            if ($this->isExists($client)) {
-                return new AccessTokenResource(
-                    AccessToken::find()->generate($client->id, ['whole_world'])
-                );
-            }
+        } catch (ClientNotFound $e) {
+            throw new NotFoundHttpException($e->getMessage());
+        } catch (UserNotFound $e) {
+            throw new BadRequestHttpException($e->getMessage());
         }
-
-        // TODO: password grant_type
-    }
-
-    /**
-     * @param Request $request
-     * @return bool
-     */
-    private function isClient(Request $request)
-    {
-        return $request->getBodyParam('grant_type') === ClientCredentials::CRED_CLIENT;
-    }
-
-    /**
-     * Checks whether the client is exists
-     *
-     * @param ClientCredentials $client
-     * @return bool
-     */
-    private function isExists(ClientCredentials $client)
-    {
-        return isset($client);
     }
 }
