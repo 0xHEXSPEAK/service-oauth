@@ -2,30 +2,56 @@
 
 namespace api\modules\api\v1\models\strategies;
 
-use api\modules\api\v1\exceptions\ClientNotFound;
+use api\modules\api\v1\exceptions\UserNotFound;
 use api\modules\api\v1\models\repository\UserRepository;
 
+/**
+ * Class PasswordStrategy
+ *
+ * @package api\modules\api\v1\models\strategies
+ */
 class PasswordStrategy extends AbstractStrategy
 {
-    /** @var  UserRepository */
+    /**
+     * Defines the repository for accessing user data
+     *
+     * @var UserRepository $userRepository
+     */
     protected $userRepository;
 
-    public function __construct($request, $accessTokenRepository, $userRepository)
-    {
+    /**
+     * PasswordStrategy constructor.
+     *
+     * @param $request
+     * @param $accessTokenRepository
+     * @param $userRepository
+     */
+    public function __construct(
+        $request,
+        $accessTokenRepository,
+        $userRepository
+    ) {
         $this->userRepository = $userRepository;
         parent::__construct($request, $accessTokenRepository);
     }
 
+    /**
+     * Generates an access token for provided
+     * username and password keys
+     *
+     * @return \api\modules\api\v1\models\AccessToken
+     * @throws UserNotFound
+     */
     public function generate()
     {
-        $user = $this->userRepository->findByUsernameWithPassword(
+        $user = $this->userRepository->isUserExists(
             $this->request->getBodyParam('username'),
             $this->request->getBodyParam('password')
         );
 
-        if (!isset($user)) {
-            throw new ClientNotFound(
-                "Client wasn't found. Check your client_id and/-or client_secret credentials."
+        if ( ! isset($user)) {
+            throw new UserNotFound(
+                "User wasn't found. Check your username and/-or password credentials."
             );
         }
 

@@ -45,7 +45,7 @@ class AccessToken extends ActiveRecord
     }
 
     /**
-     * Returns access token repository
+     * Returns an access token repository
      *
      * @return AccessTokenRepository
      */

@@ -3,22 +3,45 @@
 namespace api\modules\api\v1\models\strategies;
 
 use api\modules\api\v1\exceptions\ClientNotFound;
-use api\modules\api\v1\models\ClientCredentials;
-use api\modules\api\v1\models\GrantType;
 use api\modules\api\v1\models\repository\ClientCredentialsRepository;
-use yii\web\Request;
 
-class ClientCredentialStategy extends AbstractStrategy
+/**
+ * Class ClientCredentialStrategy
+ *
+ * @package api\modules\api\v1\models\strategies
+ */
+class ClientCredentialStrategy extends AbstractStrategy
 {
-    /** @var  ClientCredentialsRepository */
+    /**
+     * Defines the repository for accessing client credentials
+     *
+     * @var ClientCredentialsRepository $clientCredentialsRepository
+     */
     protected $clientCredentialsRepository;
 
-    public function __construct($request, $accessTokenRepository, $clientCredentialsRepository)
-    {
+    /**
+     * ClientCredentialStrategy constructor.
+     *
+     * @param $request
+     * @param $accessTokenRepository
+     * @param $clientCredentialsRepository
+     */
+    public function __construct(
+        $request,
+        $accessTokenRepository,
+        $clientCredentialsRepository
+    ) {
         $this->clientCredentialsRepository = $clientCredentialsRepository;
         parent::__construct($request, $accessTokenRepository);
     }
 
+    /**
+     * Generates an access token for provided
+     * client_id and client_secret keys
+     *
+     * @return \api\modules\api\v1\models\AccessToken
+     * @throws ClientNotFound
+     */
     public function generate()
     {
         $client = $this->clientCredentialsRepository->isClientExist(
@@ -26,7 +49,7 @@ class ClientCredentialStategy extends AbstractStrategy
             $this->request->getBodyParam('client_secret')
         );
 
-        if (!isset($client)) {
+        if ( ! isset($client)) {
             throw new ClientNotFound(
                 "Client wasn't found. Check your client_id and/-or client_secret credentials."
             );
@@ -35,5 +58,4 @@ class ClientCredentialStategy extends AbstractStrategy
         // TODO: Don't forget to change the array of scopes
         return $this->accessTokenRepository->generate($client->id, null, ['whole_world']);
     }
-
 }

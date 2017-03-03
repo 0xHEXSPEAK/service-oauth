@@ -29,7 +29,7 @@ class ClientCredentials extends ActiveRecord
     }
 
     /**
-     * Returns client repository
+     * Returns the client repository
      *
      * @return ClientCredentialsRepository
      */

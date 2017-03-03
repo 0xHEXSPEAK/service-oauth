@@ -4,12 +4,12 @@ namespace api\modules\api\v1\controllers;
 
 use yii;
 use yii\base\Module;
-use yii\base\Exception;
-use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
+use yii\web\BadRequestHttpException;
+use api\modules\api\v1\exceptions\UserNotFound;
 use api\modules\api\v1\exceptions\ClientNotFound;
-use api\modules\api\v1\models\resource\AccessTokenResource;
 use api\modules\api\v1\services\OAuthInterface;
+use api\modules\api\v1\models\resource\AccessTokenResource;
 use api\modules\api\v1\models\factories\GrantTypeFactory;
 
 /**
@@ -20,12 +20,16 @@ use api\modules\api\v1\models\factories\GrantTypeFactory;
 class OAuthController extends BaseController
 {
     /**
-     * @var string
+     * Defines an access token model class
+     *
+     * @var string $modelClass
      */
     public $modelClass = 'api\modules\api\v1\models\AccessToken';
 
     /**
-     * @var OAuthInterface
+     * Defines the service that access an oauth functionality
+     *
+     * @var OAuthInterface $oauthService
      */
     protected $oauthService;
 
@@ -60,20 +64,26 @@ class OAuthController extends BaseController
     }
 
     /**
+     * Generates an access token for provided
+     * client_id and client_secret keys
+     *
      * @return AccessTokenResource
+     * @throws BadRequestHttpException
      * @throws NotFoundHttpException
      */
     public function actionToken()
     {
         try {
-            return $this->oauthService->createAccessToken(
-                new GrantTypeFactory(),
-                Yii::$app->getRequest()
+            return new AccessTokenResource(
+                $this->oauthService->createAccessToken(
+                    new GrantTypeFactory(),
+                    Yii::$app->getRequest()
+                )
             );
         } catch (ClientNotFound $e) {
-            throw new NotFoundHttpException($e->getMessage(), 404);
-        } catch (Exception $e) {
-            throw new yii\web\BadRequestHttpException($e->getMessage());
+            throw new NotFoundHttpException($e->getMessage());
+        } catch (UserNotFound $e) {
+            throw new BadRequestHttpException($e->getMessage());
         }
     }
 }

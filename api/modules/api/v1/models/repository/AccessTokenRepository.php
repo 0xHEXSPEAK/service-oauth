@@ -18,26 +18,27 @@ class AccessTokenRepository extends ActiveQuery
      * Generates access token by given client credentials
      *
      * @param integer $clientId
+     * @param string|null $userId
      * @param array $scopes
      * @param string $type
      * @return AccessToken
      */
     public function generate(
         $clientId = null,
-        $userId = null,
-        $scopes = [],
-        $type   = GrantType::CLIENT_CREDENTIALS
+        $userId   = null,
+        $scopes   = [],
+        $type     = GrantType::CLIENT_CREDENTIALS
     ) {
         $bytes = openssl_random_pseudo_bytes(AccessToken::TOKEN_BYTES);
         $token = hash(AccessToken::CRYPT_ALGORITHM, uniqid($bytes, true));
 
         $model = new AccessToken([
-            'client_id' => $clientId,
-            'user_id' => $userId,
-            'type' => $type,
-            'token' => $token,
+            'client_id'  => $clientId,
+            'user_id'    => $userId,
+            'type'       => $type,
+            'token'      => $token,
             'expires_in' => time() + Time::SECONDS_IN_A_WEEK * 2,
-            'scope' => implode(' ', $scopes)
+            'scope'      => implode(' ', $scopes)
         ]);
 
         $model->save();

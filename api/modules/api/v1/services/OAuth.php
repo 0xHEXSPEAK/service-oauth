@@ -21,14 +21,15 @@ class OAuth implements OAuthInterface
         GrantTypeFactory $factory,
         Request $request
     ) {
-
-        switch ($request->getBodyParam('grant_type'))
-        {
+        switch ($request->getBodyParam('grant_type')) {
             case GrantType::CLIENT_CREDENTIALS:
                 return $factory->getClientCredentials()->generate();
                 break;
             case GrantType::PASSWORD:
                 return $factory->getClientCredentials()->generate();
+                break;
+            default:
+                // TODO: Implement default case.
                 break;
         }
 

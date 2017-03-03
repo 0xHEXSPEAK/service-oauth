@@ -2,9 +2,8 @@
 
 namespace api\modules\api\v1\models;
 
-use api\modules\api\v1\models\repository\UserRepository;
 use yii\db\ActiveRecord;
-use api\modules\api\v1\models\repository\ClientCredentialsRepository;
+use api\modules\api\v1\models\repository\UserRepository;
 
 /**
  * Class ClientCredentials
@@ -13,13 +12,17 @@ use api\modules\api\v1\models\repository\ClientCredentialsRepository;
  */
 class User extends ActiveRecord
 {
-    const CRYPT_ALGORITHM = 'sha256';
-
+    /**
+     * @inheritdoc
+     */
     public static function tableName()
     {
         return '{{%users}}';
     }
 
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
@@ -29,6 +32,11 @@ class User extends ActiveRecord
         ];
     }
 
+    /**
+     * Returns the user repository
+     *
+     * @return UserRepository
+     */
     public static function find()
     {
         return new UserRepository(get_called_class());

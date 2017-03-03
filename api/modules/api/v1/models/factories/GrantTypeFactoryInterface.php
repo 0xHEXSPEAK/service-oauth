@@ -2,13 +2,18 @@
 
 namespace api\modules\api\v1\models\factories;
 
-use api\modules\api\v1\strategies\ClientCredentialStategy;
-use api\modules\api\v1\strategies\PasswordStrategy;
+use api\modules\api\v1\models\strategies\PasswordStrategy;
+use api\modules\api\v1\models\strategies\ClientCredentialStrategy;
 
+/**
+ * Interface GrantTypeFactoryInterface
+ *
+ * @package api\modules\api\v1\models\factories
+ */
 interface GrantTypeFactoryInterface
 {
     /**
-     * @return ClientCredentialStategy
+     * @return ClientCredentialStrategy
      */
     public function getClientCredentials();
 
