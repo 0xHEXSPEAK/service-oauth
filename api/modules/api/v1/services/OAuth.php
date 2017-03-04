@@ -26,7 +26,7 @@ class OAuth implements OAuthInterface
                 return $factory->getClientCredentials()->generate();
                 break;
             case GrantType::PASSWORD:
-                return $factory->getClientCredentials()->generate();
+                return $factory->getPassword()->generate();
                 break;
             default:
                 // TODO: Implement default case.
