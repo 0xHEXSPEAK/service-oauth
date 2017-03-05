@@ -12,8 +12,6 @@ use api\modules\api\v1\models\repository\ClientCredentialsRepository;
  */
 class ClientCredentials extends ActiveRecord
 {
-    const CRED_CLIENT = 'client_credentials';
-
     /**
      * @inheritdoc
      */
@@ -31,7 +29,7 @@ class ClientCredentials extends ActiveRecord
     }
 
     /**
-     * Returns client repository
+     * Returns the client repository
      *
      * @return ClientCredentialsRepository
      */

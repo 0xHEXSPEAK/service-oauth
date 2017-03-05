@@ -14,13 +14,13 @@ class ClientCredentialsRepository extends ActiveQuery
 {
     /**
      * Checks whether the given client credentials
-     * exits in storage
+     * exists in storage
      *
      * @param string $id
      * @param string $secret
      * @return ClientCredentials|array|null|
      */
-    public function isClientExist($id, $secret)
+    public function findByClientCredentials($id, $secret)
     {
         return $this->where([
             'client_id' => $id,
