@@ -12,6 +12,7 @@ coverage:
     enabled: true
     include:
         - ../api/modules/api/*/services/*
+        - ../api/modules/api/*/models/strategies/*
 modules:
     config:
         Yii2:
