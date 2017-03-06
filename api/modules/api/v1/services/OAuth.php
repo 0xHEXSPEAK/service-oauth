@@ -6,6 +6,7 @@ use yii\web\Request;
 use yii\base\Exception;
 use api\modules\api\v1\models\GrantType;
 use api\modules\api\v1\models\factories\GrantTypeFactory;
+use api\modules\api\v1\models\repository\ScopeRepository;
 
 /**
  * Class OAuth
@@ -19,14 +20,17 @@ class OAuth implements OAuthInterface
      */
     public function createAccessToken(
         Request $request,
-        GrantTypeFactory $factory
+        GrantTypeFactory $factory,
+        ScopeRepository $scopeRepository
     ) {
+        $scopes = $scopeRepository->findAllowed($request->getBodyParam('scope'));
+
         switch ($request->getBodyParam('grant_type')) {
             case GrantType::CLIENT_CREDENTIALS:
-                return $factory->getClientCredentials()->generate();
+                return $factory->getClientCredentials()->generate($scopes);
                 break;
             case GrantType::PASSWORD:
-                return $factory->getPassword()->generate();
+                return $factory->getPassword()->generate($scopes);
                 break;
             default:
                 // TODO: Implement default case.
