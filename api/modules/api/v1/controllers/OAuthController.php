@@ -9,6 +9,7 @@ use yii\web\BadRequestHttpException;
 use api\modules\api\v1\exceptions\UserNotFound;
 use api\modules\api\v1\exceptions\ClientNotFound;
 use api\modules\api\v1\services\OAuthInterface;
+use api\modules\api\v1\models\Scope;
 use api\modules\api\v1\models\resource\AccessTokenResource;
 use api\modules\api\v1\models\factories\GrantTypeFactory;
 
@@ -77,7 +78,8 @@ class OAuthController extends BaseController
             return new AccessTokenResource(
                 $this->oauthService->createAccessToken(
                     Yii::$app->getRequest(),
-                    new GrantTypeFactory()
+                    new GrantTypeFactory(),
+                    Scope::find()
                 )
             );
         } catch (ClientNotFound $e) {
