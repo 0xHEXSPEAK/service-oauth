@@ -65,7 +65,7 @@ class ClientCredentialsStrategy extends \PHPUnit_Framework_TestCase
             ->method('findByClientCredentials')
             ->willReturn(null);
 
-        $this->strategy->generate();
+        $this->strategy->generate(['scopes']);
     }
 
     public function testGenerateWithValidCredentials()
@@ -93,10 +93,10 @@ class ClientCredentialsStrategy extends \PHPUnit_Framework_TestCase
 
         $this->accessTokenRepositoryMock->expects($this->once())
             ->method('generate')
-            ->with(123, null, ['whole_world'], GrantType::CLIENT_CREDENTIALS)
+            ->with(123, null, ['scopes'], GrantType::CLIENT_CREDENTIALS)
             ->willReturn($this->accessTokenMock);
 
-        $result = $this->strategy->generate();
+        $result = $this->strategy->generate(['scopes']);
         $this->assertInstanceOf(AccessToken::class, $result);
     }
 }

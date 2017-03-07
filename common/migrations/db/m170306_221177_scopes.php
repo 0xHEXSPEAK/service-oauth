@@ -5,7 +5,7 @@ use yii\db\Migration;
 /**
  * Class m170301_220177_bind_user_id_with_token
  */
-class m170301_220177_bind_user_id_with_token extends Migration
+class m170306_221177_scopes extends Migration
 {
     /**
      * @var string $table
