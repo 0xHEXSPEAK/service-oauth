@@ -14,7 +14,7 @@ class ScopeRepository extends ActiveQuery
 {
     public function findAllowed($list)
     {
-        $this->where([
+        return $this->where([
             ['IN', 'name', $list]
         ])->orWhere([
             'is_default' => Scope::STATUS_DEFAULT
