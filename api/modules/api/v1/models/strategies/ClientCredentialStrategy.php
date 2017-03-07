@@ -42,7 +42,7 @@ class ClientCredentialStrategy extends AbstractStrategy
      * @return \api\modules\api\v1\models\AccessToken
      * @throws ClientNotFound
      */
-    public function generate()
+    public function generate(array $scopes)
     {
         $client = $this->clientCredentialsRepository->findByClientCredentials(
             $this->request->getBodyParam('client_id'),
@@ -56,6 +56,6 @@ class ClientCredentialStrategy extends AbstractStrategy
         }
 
         // TODO: Don't forget to change the array of scopes
-        return $this->accessTokenRepository->generate($client->id, null, ['whole_world']);
+        return $this->accessTokenRepository->generate($client->id, null, $scopes);
     }
 }

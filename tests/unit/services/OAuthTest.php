@@ -5,6 +5,7 @@ namespace tests\unit\services;
 use api\modules\api\v1\models\AccessToken;
 use api\modules\api\v1\models\factories\GrantTypeFactory;
 use api\modules\api\v1\models\GrantType;
+use api\modules\api\v1\models\repository\ScopeRepository;
 use api\modules\api\v1\models\strategies\ClientCredentialStrategy;
 use api\modules\api\v1\models\strategies\PasswordStrategy;
 use \api\modules\api\v1\services\OAuth;
@@ -30,6 +31,9 @@ class OAuthTest extends \PHPUnit_Framework_TestCase
     /** @var  PasswordStrategy | \PHPUnit_Framework_MockObject_MockObject */
     protected $passwordStrategyMock;
 
+    /** @var  ScopeRepository | \PHPUnit_Framework_MockObject_MockObject */
+    protected $scopesRepositoryMock;
+
     public function setUp()
     {
         $this->requestMock = $this->getMockBuilder(Request::class)
@@ -49,15 +53,23 @@ class OAuthTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $this->scopesRepositoryMock = $this->getMockBuilder(ScopeRepository::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->service = new OAuth();
     }
 
     public function testCreateClientCredentialsToken()
     {
-        $this->requestMock->expects($this->once())
+        $this->requestMock->expects($this->at(1))
             ->method('getBodyParam')
             ->with('grant_type', null)
             ->willReturn(GrantType::CLIENT_CREDENTIALS);
+
+        $this->scopesRepositoryMock->expects($this->once())
+            ->method('findAllowed')
+            ->willReturn(['scopes']);
 
         $this->factoryMock->expects($this->once())
             ->method('getClientCredentials')
@@ -67,17 +79,25 @@ class OAuthTest extends \PHPUnit_Framework_TestCase
             ->method('generate')
             ->willReturn($this->accessTokenMock);
 
-        $result = $this->service->createAccessToken($this->requestMock, $this->factoryMock);
+        $result = $this->service->createAccessToken(
+            $this->requestMock,
+            $this->factoryMock,
+            $this->scopesRepositoryMock
+        );
 
         $this->assertInstanceOf(AccessToken::class, $result);
     }
 
     public function testCreatePasswordToken()
     {
-        $this->requestMock->expects($this->once())
+        $this->requestMock->expects($this->at(1))
             ->method('getBodyParam')
             ->with('grant_type', null)
             ->willReturn(GrantType::PASSWORD);
+
+        $this->scopesRepositoryMock->expects($this->once())
+            ->method('findAllowed')
+            ->willReturn(['scopes']);
 
         $this->factoryMock->expects($this->once())
             ->method('getPassword')
@@ -87,7 +107,11 @@ class OAuthTest extends \PHPUnit_Framework_TestCase
             ->method('generate')
             ->willReturn($this->accessTokenMock);
 
-        $result = $this->service->createAccessToken($this->requestMock, $this->factoryMock);
+        $result = $this->service->createAccessToken(
+            $this->requestMock,
+            $this->factoryMock,
+            $this->scopesRepositoryMock
+        );
 
         $this->assertInstanceOf(AccessToken::class, $result);
     }
@@ -97,12 +121,16 @@ class OAuthTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateAcessTokenWithWrongGrant()
     {
-        $this->requestMock->expects($this->once())
+        $this->requestMock->expects($this->at(1))
             ->method('getBodyParam')
             ->with('grant_type', null)
             ->willReturn('');
 
-        $this->service->createAccessToken($this->requestMock, $this->factoryMock);
+        $this->service->createAccessToken(
+            $this->requestMock,
+            $this->factoryMock,
+            $this->scopesRepositoryMock
+        );
     }
 
 }

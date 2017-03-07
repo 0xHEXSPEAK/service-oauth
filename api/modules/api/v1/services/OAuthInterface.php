@@ -3,6 +3,7 @@
 namespace api\modules\api\v1\services;
 
 use yii\web\Request;
+use api\modules\api\v1\models\repository\ScopeRepository;
 use api\modules\api\v1\models\factories\GrantTypeFactory;
 use api\modules\api\v1\models\resource\AccessTokenResource;
 
@@ -23,6 +24,7 @@ interface OAuthInterface
      */
     public function createAccessToken(
         Request $request,
-        GrantTypeFactory $factory
+        GrantTypeFactory $factory,
+        ScopeRepository $scopeRepository
     );
 }

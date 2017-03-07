@@ -64,7 +64,7 @@ class PasswordStrategyTest extends \PHPUnit_Framework_TestCase
             ->method('findByUserCredentials')
             ->willReturn(null);
 
-        $this->strategy->generate();
+        $this->strategy->generate(['scopes']);
     }
 
     public function testGenerateWithValidCredentials()
@@ -92,10 +92,10 @@ class PasswordStrategyTest extends \PHPUnit_Framework_TestCase
 
         $this->accessTokenRepositoryMock->expects($this->once())
             ->method('generate')
-            ->with(null, 123, ['whole_world'], 'password')
+            ->with(null, 123, ['scopes'], 'password')
             ->willReturn($this->accessTokenMock);
 
-        $result = $this->strategy->generate();
+        $result = $this->strategy->generate(['scopes']);
         $this->assertInstanceOf(AccessToken::class, $result);
     }
 }

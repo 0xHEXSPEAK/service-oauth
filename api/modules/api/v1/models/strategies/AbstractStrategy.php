@@ -45,8 +45,10 @@ abstract class AbstractStrategy
      * Generates and access token
      * by provided credentials and grant type
      *
+     *
+     * @param array $scopes
      * @return string
      * @throws ClientNotFound
      */
-    public abstract function generate();
+    public abstract function generate(array $scopes);
 }

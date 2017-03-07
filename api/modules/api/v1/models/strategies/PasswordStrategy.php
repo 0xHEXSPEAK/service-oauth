@@ -39,10 +39,11 @@ class PasswordStrategy extends AbstractStrategy
      * Generates an access token for provided
      * username and password keys
      *
+     * @param array $scopes
      * @return \api\modules\api\v1\models\AccessToken
      * @throws UserNotFound
      */
-    public function generate()
+    public function generate(array $scopes)
     {
         $user = $this->userRepository->findByUserCredentials(
             $this->request->getBodyParam('username'),
@@ -56,6 +57,6 @@ class PasswordStrategy extends AbstractStrategy
         }
 
         // TODO: Don't forget to change the array of scopes
-        return $this->accessTokenRepository->generate(null, $user->id, ['whole_world'], 'password');
+        return $this->accessTokenRepository->generate(null, $user->id, $scopes, 'password');
     }
 }
