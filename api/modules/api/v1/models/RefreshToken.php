@@ -3,14 +3,14 @@
 namespace api\modules\api\v1\models;
 
 use yii\db\ActiveRecord;
-use api\modules\api\v1\models\repository\AccessTokenRepository;
+use api\modules\api\v1\models\repository\RefreshTokenRepository;
 
 /**
  * Class AccessToken
  *
  * @package api\modules\api\v1\models
  */
-class AccessToken extends ActiveRecord
+class RefreshToken extends ActiveRecord
 {
     /**
      * Defines the number of bytes used by openssl_random_pseudo_bytes
@@ -29,16 +29,11 @@ class AccessToken extends ActiveRecord
     const CRYPT_ALGORITHM = 'sha256';
 
     /**
-     * @var RefreshToken
-     */
-    public $refresh_token;
-
-    /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return '{{%access_tokens}}';
+        return '{{%refresh_tokens}}';
     }
 
     /**
@@ -52,11 +47,11 @@ class AccessToken extends ActiveRecord
     /**
      * Returns an access token repository
      *
-     * @return AccessTokenRepository
+     * @return RefreshTokenRepository
      */
     public static function find()
     {
-        return new AccessTokenRepository(get_called_class());
+        return new RefreshTokenRepository(get_called_class());
     }
 
     /**
@@ -65,8 +60,7 @@ class AccessToken extends ActiveRecord
     public function rules()
     {
         return [
-            [['type', 'token', 'expires_in', 'scope'], 'required'],
-            [['type', 'token', 'scope'], 'string'],
+            [['user_id'], 'required'],
             [['expires_in'], 'integer']
         ];
     }

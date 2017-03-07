@@ -3,6 +3,7 @@
 namespace api\modules\api\v1\models\strategies;
 
 use api\modules\api\v1\exceptions\UserNotFound;
+use api\modules\api\v1\models\RefreshToken;
 use api\modules\api\v1\models\repository\UserRepository;
 
 /**
@@ -20,6 +21,11 @@ class PasswordStrategy extends AbstractStrategy
     protected $userRepository;
 
     /**
+     * @var \api\modules\api\v1\models\repository\RefreshTokenRepository
+     */
+    protected $refreshTokenRepository;
+
+    /**
      * PasswordStrategy constructor.
      *
      * @param $request
@@ -32,6 +38,7 @@ class PasswordStrategy extends AbstractStrategy
         $userRepository
     ) {
         $this->userRepository = $userRepository;
+        $this->refreshTokenRepository = RefreshToken::find();
         parent::__construct($request, $accessTokenRepository);
     }
 
@@ -56,7 +63,9 @@ class PasswordStrategy extends AbstractStrategy
             );
         }
 
-        // TODO: Don't forget to change the array of scopes
-        return $this->accessTokenRepository->generate(null, $user->id, $scopes, 'password');
+        $token = $this->accessTokenRepository->generate(null, $user->id, $scopes, 'password');
+        $token->refresh_token = $this->refreshTokenRepository->generate($user->id);
+
+        return $token;
     }
 }

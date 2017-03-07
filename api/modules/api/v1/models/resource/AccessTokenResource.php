@@ -18,6 +18,9 @@ class AccessTokenResource extends AccessToken
     {
         return [
             'token',
+            'refresh_token' => function() {
+                $this->refresh_token->token;
+            },
             'expires_in'
         ];
     }
