@@ -1,21 +1,22 @@
 {
-    "name": "gninjava/service-storage",
-    "description": "Service Skeleton Application Template",
+    "name": "0xhexspeak/service-oauth",
+    "description": "Oauth2 Service",
     "keywords": [
         "yii2",
-        "framework",
-        "application template",
-        "skeleton",
-        "service"
+        "oauth2",
+        "microservice"
     ],
-    "authors": [{
+    "authors": [
+        {
+            "name": "Yaroslav Khortiuk",
+            "email": "yarik@0xhexspeak.cf"
+        },
+        {
             "name": "Denis Horobtsov",
-            "email": "gninjava@gmail.com",
-            "role": "Developer"
+            "email": "denis@0xhexspeak.cf"
         }
     ],
     "type": "project",
-    "license": "BSD-3-Clause",
     "support": {
         "issues": "https://github.com/yiisoft/yii2/issues?state=open",
         "forum": "http://www.yiiframework.com/forum/",
@@ -24,6 +25,12 @@
         "source": "https://github.com/yiisoft/yii2"
     },
     "minimum-stability": "stable",
+    "repositories": [
+        {
+            "url": "https://github.com/devyk/yii2-oauth2-filter.git",
+            "type": "git"
+        }
+    ],
     "require": {
         "php": ">=5.5.0",
         "ext-intl": "*",

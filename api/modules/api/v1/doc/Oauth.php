@@ -1,6 +1,6 @@
 <?php
 /**
- * @api {post} /token Obtain a new token
+ * @api {post} /oauth/token Obtain a new token
  * @apiVersion 1.0.0
  * @apiName PostOauth2Token
  * @apiDescription Use this for requesting a new token.
