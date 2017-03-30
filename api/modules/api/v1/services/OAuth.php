@@ -3,7 +3,7 @@
 namespace api\modules\api\v1\services;
 
 use yii\web\Request;
-use yii\base\Exception;
+use yii\web\BadRequestHttpException;
 use api\modules\api\v1\models\GrantType;
 use api\modules\api\v1\models\factories\GrantTypeFactory;
 use api\modules\api\v1\models\repository\ScopeRepository;
@@ -24,7 +24,8 @@ class OAuth implements OAuthInterface
         ScopeRepository $scopeRepository
     ) {
         $scopes = $scopeRepository->findAllowed($request->getBodyParam('scope'));
-
+        // fixme: scopes should be casted to a simple array
+        // $this->implodeScopes($scopes);
         switch ($request->getBodyParam('grant_type')) {
             case GrantType::CLIENT_CREDENTIALS:
                 return $factory->getClientCredentials()->generate($scopes);
@@ -37,6 +38,6 @@ class OAuth implements OAuthInterface
                 break;
         }
 
-        throw new Exception('Wrong grant_type');
+        throw new BadRequestHttpException('Wrong grant_type');
     }
 }

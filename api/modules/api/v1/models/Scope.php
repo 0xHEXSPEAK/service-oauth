@@ -6,15 +6,17 @@ use yii\db\ActiveRecord;
 use api\modules\api\v1\models\repository\ScopeRepository;
 
 /**
- * Class ClientCredentials
+ * Class ClientCredentials.
  *
  * @package api\modules\api\v1\models
  */
 class Scope extends ActiveRecord
 {
-    const STATUS_CUSTOM = 0;
+    const STATUS_CUSTOM    = 0;
 
-    const STATUS_DEFAULT = 1;
+    const STATUS_DEFAULT   = 1;
+
+    const SCOPES_DELIMITER = ' ';
 
     /**
      * @inheritdoc
@@ -25,7 +27,7 @@ class Scope extends ActiveRecord
     }
 
     /**
-     * Returns the scope repository
+     * Returns the scope repository.
      *
      * @return ScopeRepository
      */

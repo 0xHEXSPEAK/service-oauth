@@ -119,7 +119,7 @@ class OAuthTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \yii\base\Exception
      */
-    public function testCreateAcessTokenWithWrongGrant()
+    public function testCreateAccessTokenWithWrongGrant()
     {
         $this->requestMock->expects($this->at(1))
             ->method('getBodyParam')

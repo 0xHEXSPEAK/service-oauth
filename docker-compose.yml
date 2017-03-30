@@ -33,7 +33,7 @@ db:
   ports:
     - "33061:33061"
   environment:
-    MYSQL_DATABASE: service-skeleton
+    MYSQL_DATABASE: service-oauth2
     MYSQL_USER: api_dbu
     MYSQL_PASSWORD: api_pass
     MYSQL_ROOT_PASSWORD: root

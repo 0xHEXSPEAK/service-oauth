@@ -39,6 +39,7 @@ class ClientCredentialStrategy extends AbstractStrategy
      * Generates an access token for provided
      * client_id and client_secret keys
      *
+     * @param array $scopes
      * @return \api\modules\api\v1\models\AccessToken
      * @throws ClientNotFound
      */
