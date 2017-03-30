@@ -25,12 +25,6 @@
         "source": "https://github.com/yiisoft/yii2"
     },
     "minimum-stability": "stable",
-    "repositories": [
-        {
-            "url": "https://github.com/devyk/yii2-oauth2-filter.git",
-            "type": "git"
-        }
-    ],
     "require": {
         "php": ">=5.5.0",
         "ext-intl": "*",
