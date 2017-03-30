@@ -3,9 +3,9 @@
 namespace api\modules\api\v1\models\strategies;
 
 use yii\web\Request;
-use api\modules\api\v1\exceptions\ClientNotFound;
 use api\modules\api\v1\models\AccessToken;
 use api\modules\api\v1\models\repository\AccessTokenRepository;
+use api\modules\api\v1\exceptions\ClientNotFound;
 
 /**
  * Class AbstractStrategy
@@ -45,7 +45,6 @@ abstract class AbstractStrategy
     /**
      * Generates and access token
      * by provided credentials and grant type
-     *
      *
      * @param array $scopes
      * @return AccessToken
