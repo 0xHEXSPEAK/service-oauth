@@ -24,8 +24,7 @@ class OAuth implements OAuthInterface
         ScopeRepository $scopeRepository
     ) {
         $scopes = $scopeRepository->findAllowed($request->getBodyParam('scope'));
-        // fixme: scopes should be casted to a simple array
-        // $this->implodeScopes($scopes);
+        $scopes = $scopeRepository->collect($scopes);
 
         switch ($request->getBodyParam('grant_type')) {
             case GrantType::CLIENT_CREDENTIALS:

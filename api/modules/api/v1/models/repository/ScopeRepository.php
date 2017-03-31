@@ -27,4 +27,18 @@ class ScopeRepository extends ActiveQuery
             ['is_default' => Scope::STATUS_DEFAULT]
         )->all();
     }
+
+    /**
+     * Extracts scopes from the object and
+     * stores the result in simple array.
+     *
+     * @param array $scopes
+     * @return array
+     */
+    public function collect($scopes)
+    {
+        return array_map(function(/* @var \api\modules\api\v1\models\Scope $each*/ $each) {
+            return $each->getAttribute('name');
+        }, $scopes);
+    }
 }
