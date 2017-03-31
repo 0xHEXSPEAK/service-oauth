@@ -2,14 +2,14 @@
 
 namespace tests\unit\services;
 
+use yii\web\Request;
+use api\modules\api\v1\services\OAuth;
+use api\modules\api\v1\models\GrantType;
 use api\modules\api\v1\models\AccessToken;
 use api\modules\api\v1\models\factories\GrantTypeFactory;
-use api\modules\api\v1\models\GrantType;
 use api\modules\api\v1\models\repository\ScopeRepository;
 use api\modules\api\v1\models\strategies\ClientCredentialStrategy;
 use api\modules\api\v1\models\strategies\PasswordStrategy;
-use \api\modules\api\v1\services\OAuth;
-use yii\web\Request;
 
 class OAuthTest extends \PHPUnit_Framework_TestCase
 {
@@ -69,7 +69,12 @@ class OAuthTest extends \PHPUnit_Framework_TestCase
 
         $this->scopesRepositoryMock->expects($this->once())
             ->method('findAllowed')
-            ->willReturn(['scopes']);
+            ->willReturn($this->isType('object'));
+
+        $this->scopesRepositoryMock->expects($this->once())
+            ->method('collect')
+            ->with($this->isType('object'))
+            ->willReturn([]);
 
         $this->factoryMock->expects($this->once())
             ->method('getClientCredentials')
@@ -97,7 +102,12 @@ class OAuthTest extends \PHPUnit_Framework_TestCase
 
         $this->scopesRepositoryMock->expects($this->once())
             ->method('findAllowed')
-            ->willReturn(['scopes']);
+            ->willReturn($this->isType('object'));
+
+        $this->scopesRepositoryMock->expects($this->once())
+            ->method('collect')
+            ->with($this->isType('object'))
+            ->willReturn([]);
 
         $this->factoryMock->expects($this->once())
             ->method('getPassword')
