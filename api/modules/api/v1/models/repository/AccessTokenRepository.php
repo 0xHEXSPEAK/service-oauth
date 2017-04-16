@@ -45,4 +45,17 @@ class AccessTokenRepository extends ActiveQuery
 
         return $model;
     }
+
+    /**
+     * Returns info by given token.
+     *
+     * @param $token
+     * @return AccessToken|array|null
+     */
+    public function extractInfo($token)
+    {
+        return $this
+            ->where(['token' => $token])
+            ->one();
+    }
 }

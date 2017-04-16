@@ -3,14 +3,18 @@
 namespace api\modules\api\v1\controllers;
 
 use yii;
+use yii\base\InvalidCallException;
 use yii\base\Module;
 use yii\web\NotFoundHttpException;
 use yii\web\BadRequestHttpException;
+use api\modules\api\v1\services\OAuthInterface;
 use api\modules\api\v1\exceptions\UserNotFound;
 use api\modules\api\v1\exceptions\ClientNotFound;
-use api\modules\api\v1\services\OAuthInterface;
+use api\modules\api\v1\exceptions\TokenInfoNotFound;
 use api\modules\api\v1\models\Scope;
+use api\modules\api\v1\models\AccessToken;
 use api\modules\api\v1\models\resource\AccessTokenResource;
+use api\modules\api\v1\models\resource\AccessTokenInfoResource;
 use api\modules\api\v1\models\factories\GrantTypeFactory;
 
 /**
@@ -86,6 +90,29 @@ class OAuthController extends BaseController
             throw new NotFoundHttpException($e->getMessage());
         } catch (UserNotFound $e) {
             throw new BadRequestHttpException($e->getMessage());
+        }
+    }
+
+    /**
+     * Returns relative information from an access token.
+     *
+     * @return mixed
+     * @throws BadRequestHttpException
+     * @throws NotFoundHttpException
+     */
+    public function actionTokeninfo()
+    {
+        try {
+            return new AccessTokenInfoResource(
+                $this->oauthService->retrieveTokenInfo(
+                    \Yii::$app->getRequest(),
+                    AccessToken::find()
+                )
+            );
+        } catch (InvalidCallException $e) {
+            throw new BadRequestHttpException($e->getMessage());
+        } catch (TokenInfoNotFound $e) {
+            throw new NotFoundHttpException($e->getMessage());
         }
     }
 }

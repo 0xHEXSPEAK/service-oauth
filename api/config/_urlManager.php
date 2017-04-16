@@ -9,7 +9,8 @@ return [
             'class' => 'yii\rest\UrlRule',
             'controller' => ['v1/oauth' => 'api/v1/o-auth'],
             'extraPatterns' => [
-                'POST token' => 'token',
+                'POST token'    => 'token',
+                'GET tokeninfo' => 'tokeninfo'
             ],
         ]
     ]
