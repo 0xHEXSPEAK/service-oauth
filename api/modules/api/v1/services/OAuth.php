@@ -86,8 +86,8 @@ class OAuth implements OAuthInterface
      */
     protected function checkRequestParam(Request $request, $name)
     {
-        if ( ! $request->getQueryParam($name)) {
-            throw new InvalidCallException("Missed query param. Check your '$name' param.");
+        if ( ! $request->getBodyParam($name)) {
+            throw new InvalidCallException("Missed body param. Check your '$name' param.");
         }
 
         return true;
