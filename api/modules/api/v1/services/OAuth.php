@@ -78,7 +78,7 @@ class OAuth implements OAuthInterface
     }
 
     /**
-     * Checks whether request has proper param
+     * Retrieves an access token from authorization header.
      *
      * @param Request $request
      * @return string
