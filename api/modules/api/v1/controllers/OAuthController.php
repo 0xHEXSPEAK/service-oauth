@@ -3,8 +3,8 @@
 namespace api\modules\api\v1\controllers;
 
 use yii;
-use yii\base\InvalidCallException;
 use yii\base\Module;
+use yii\base\InvalidCallException;
 use yii\web\NotFoundHttpException;
 use yii\web\BadRequestHttpException;
 use api\modules\api\v1\services\OAuthInterface;
@@ -16,13 +16,14 @@ use api\modules\api\v1\models\AccessToken;
 use api\modules\api\v1\models\resource\AccessTokenResource;
 use api\modules\api\v1\models\resource\AccessTokenInfoResource;
 use api\modules\api\v1\models\factories\GrantTypeFactory;
+use Oxhexspeak\OauthFilter\Controllers\RestController;
 
 /**
  * Class OAuthController
  *
  * @package api\modules\api\v1\controllers
  */
-class OAuthController extends BaseController
+class OAuthController extends RestController
 {
     /**
      * Defines an access token model class

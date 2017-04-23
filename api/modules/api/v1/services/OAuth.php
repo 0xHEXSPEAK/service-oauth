@@ -52,10 +52,10 @@ class OAuth implements OAuthInterface
         Request $request,
         AccessTokenRepository $accessTokenRepository
     ) {
-        $this->checkRequestParam($request, 'access_token');
+        $token = $this->retrieveAuthorizationHeader($request);
 
         return $this->isModelSet(
-            $accessTokenRepository->extractInfo($request->get('access_token')),
+            $accessTokenRepository->extractInfo($token),
             "No info were found. Check your 'access_token' param."
         );
     }
@@ -81,15 +81,16 @@ class OAuth implements OAuthInterface
      * Checks whether request has proper param
      *
      * @param Request $request
-     * @return bool
+     * @return string
      * @throws InvalidCallException
      */
-    protected function checkRequestParam(Request $request, $name)
+    protected function retrieveAuthorizationHeader(Request $request)
     {
-        if ( ! $request->getBodyParam($name)) {
-            throw new InvalidCallException("Missed body param. Check your '$name' param.");
+        $authHeader = $request->getHeaders()->get('Authorization');
+        if ($authHeader !== null && preg_match('/^Bearer\s+(.*?)$/', $authHeader, $matches)) {
+            return $matches[1];
         }
 
-        return true;
+        throw new InvalidCallException("Authorization header is missed.");
     }
 }
