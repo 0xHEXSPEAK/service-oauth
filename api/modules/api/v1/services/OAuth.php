@@ -52,7 +52,7 @@ class OAuth implements OAuthInterface
         Request $request,
         AccessTokenRepository $accessTokenRepository
     ) {
-        $token = $this->retrieveAuthorizationHeader($request);
+        $token = $this->retrieveTokenFromHeader($request);
 
         return $this->isModelSet(
             $accessTokenRepository->extractInfo($token),
@@ -84,7 +84,7 @@ class OAuth implements OAuthInterface
      * @return string
      * @throws InvalidCallException
      */
-    protected function retrieveAuthorizationHeader(Request $request)
+    protected function retrieveTokenFromHeader(Request $request)
     {
         $authHeader = $request->getHeaders()->get('Authorization');
         if ($authHeader !== null && preg_match('/^Bearer\s+(.*?)$/', $authHeader, $matches)) {
