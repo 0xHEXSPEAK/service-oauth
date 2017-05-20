@@ -39,6 +39,14 @@ class OAuthController extends RestController
      */
     protected $oauthService;
 
+
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+        unset($behaviors['access']);
+        return $behaviors;
+    }
+
     /**
      * InstanceController constructor.
      *
@@ -104,11 +112,9 @@ class OAuthController extends RestController
     public function actionTokeninfo()
     {
         try {
-            return new AccessTokenInfoResource(
-                $this->oauthService->retrieveTokenInfo(
-                    \Yii::$app->getRequest(),
-                    AccessToken::find()
-                )
+            return $this->oauthService->retrieveTokenInfo(
+                Yii::$app->getRequest(),
+                AccessTokenInfoResource::find()
             );
         } catch (InvalidCallException $e) {
             throw new BadRequestHttpException($e->getMessage());

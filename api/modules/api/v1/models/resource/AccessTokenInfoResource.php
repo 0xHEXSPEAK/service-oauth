@@ -17,6 +17,8 @@ class AccessTokenInfoResource extends AccessToken
     public function fields()
     {
         return [
+            'client_id',
+            'user_id',
             'type',
             'expires_in',
             'scope'

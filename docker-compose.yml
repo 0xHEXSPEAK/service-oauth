@@ -31,7 +31,7 @@ db:
   volumes:
     - /var/lib/mysql
   ports:
-    - "33061:33061"
+    - "33061:3306"
   environment:
     MYSQL_DATABASE: service-oauth2
     MYSQL_USER: api_dbu
