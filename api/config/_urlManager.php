@@ -10,7 +10,8 @@ return [
             'controller' => ['v1/oauth' => 'api/v1/o-auth'],
             'extraPatterns' => [
                 'POST token'    => 'token',
-                'GET tokeninfo' => 'tokeninfo'
+                'GET tokeninfo' => 'tokeninfo',
+                'POST register' => 'register'
             ],
         ]
     ]

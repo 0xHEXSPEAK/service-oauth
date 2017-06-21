@@ -27,8 +27,8 @@ class User extends ActiveRecord
     {
         return [
             [['username', 'password'], 'required'],
-            [['username'], 'string', 'length' => ['5', '254']],
-            [['password'], 'string', 'length' => ['64', '64']],
+            [['username'], 'string', 'length' => [5, 254]],
+            [['password'], 'string', 'length' => [5, 64]],
         ];
     }
 
@@ -40,5 +40,18 @@ class User extends ActiveRecord
     public static function find()
     {
         return new UserRepository(get_called_class());
+    }
+
+    /**
+     * @param bool $insert
+     * @return bool
+     */
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            $this->password = \Yii::$app->getSecurity()->generatePasswordHash($this->password);
+            return true;
+        }
+        return false;
     }
 }

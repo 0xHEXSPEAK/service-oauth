@@ -4,6 +4,7 @@ namespace api\modules\api\v1\models\strategies;
 
 use api\modules\api\v1\exceptions\UserNotFound;
 use api\modules\api\v1\models\repository\UserRepository;
+use yii\base\Security;
 
 /**
  * Class PasswordStrategy
@@ -20,18 +21,26 @@ class PasswordStrategy extends AbstractStrategy
     protected $userRepository;
 
     /**
+     * @var Security
+     */
+    protected $userSecurity;
+
+    /**
      * PasswordStrategy constructor.
      *
      * @param $request
      * @param $accessTokenRepository
      * @param $userRepository
+     * @param $security
      */
     public function __construct(
         $request,
         $accessTokenRepository,
-        $userRepository
+        $userRepository,
+        Security $security
     ) {
         $this->userRepository = $userRepository;
+        $this->userSecurity = $security;
         parent::__construct($request, $accessTokenRepository);
     }
 
@@ -47,7 +56,7 @@ class PasswordStrategy extends AbstractStrategy
     {
         $user = $this->userRepository->findByUserCredentials(
             $this->request->getBodyParam('username'),
-            $this->request->getBodyParam('password')
+            $this->userSecurity->generatePasswordHash($this->request->getBodyParam('password'))
         );
 
         if ( ! isset($user)) {

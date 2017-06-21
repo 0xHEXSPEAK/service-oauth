@@ -2,6 +2,7 @@
 
 namespace api\modules\api\v1\controllers;
 
+use api\modules\api\v1\models\User;
 use yii;
 use yii\base\Module;
 use yii\base\InvalidCallException;
@@ -100,6 +101,19 @@ class OAuthController extends RestController
         } catch (UserNotFound $e) {
             throw new BadRequestHttpException($e->getMessage());
         }
+    }
+
+    /**
+     * Enpoint for registering new users.
+     */
+    public function actionRegister()
+    {
+        $user = new User();
+        $user->load(Yii::$app->getRequest()->getBodyParams(), '');
+        Yii::$app->getResponse()->setStatusCode(201);
+        $user->save();
+
+        return $user;
     }
 
     /**

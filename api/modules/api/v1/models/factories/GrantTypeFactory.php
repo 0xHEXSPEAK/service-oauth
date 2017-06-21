@@ -42,7 +42,8 @@ class GrantTypeFactory implements GrantTypeFactoryInterface
         return new PasswordStrategy(
             Yii::$app->getRequest(),
             AccessTokenResource::find(),
-            User::find()
+            User::find(),
+            Yii::$app->getSecurity()
         );
     }
 }

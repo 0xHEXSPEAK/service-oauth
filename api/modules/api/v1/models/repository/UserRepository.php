@@ -18,14 +18,14 @@ class UserRepository extends ActiveQuery
      * and password exists in storage
      *
      * @param string $username
-     * @param string $password
+     * @param string $hash
      * @return array|null|User
      */
-    public function findByUserCredentials($username, $password)
+    public function findByUserCredentials($username, $hash)
     {
         return $this->where([
             'username' => $username,
-            'password' => hash(AccessToken::CRYPT_ALGORITHM, $password)
+            'password' => $hash
         ])->one();
     }
 }
