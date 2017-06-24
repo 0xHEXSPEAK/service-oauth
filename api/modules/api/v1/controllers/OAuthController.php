@@ -6,6 +6,7 @@ use api\modules\api\v1\models\User;
 use yii;
 use yii\base\Module;
 use yii\base\InvalidCallException;
+use yii\base\InvalidValueException;
 use yii\web\NotFoundHttpException;
 use yii\web\BadRequestHttpException;
 use api\modules\api\v1\services\OAuthInterface;
@@ -71,11 +72,7 @@ class OAuthController extends RestController
      */
     public function actions()
     {
-        return [
-            /**
-             * Contains no actions because of custom method usage
-             */
-        ];
+        return [];
     }
 
     /**
@@ -104,16 +101,20 @@ class OAuthController extends RestController
     }
 
     /**
-     * Enpoint for registering new users.
+     * Endpoint for registering new users.
      */
     public function actionRegister()
     {
-        $user = new User();
-        $user->load(Yii::$app->getRequest()->getBodyParams(), '');
-        Yii::$app->getResponse()->setStatusCode(201);
-        $user->save();
-
-        return $user;
+        try {
+            Yii::$app->getResponse()->setStatusCode(201);
+            return $this->oauthService->registerUserCredentials(
+                AccessTokenInfoResource::find(),
+                new User(),
+                Yii::$app->getRequest()
+            );
+        } catch (InvalidValueException $e) {
+            throw new BadRequestHttpException($e->getMessage());
+        }
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace api\modules\api\v1\services;
 
+use api\modules\api\v1\models\User;
 use yii\web\Request;
 use yii\web\BadRequestHttpException;
 use yii\base\InvalidCallException;
@@ -58,6 +59,26 @@ class OAuth implements OAuthInterface
             $accessTokenRepository->extractInfo($token),
             "No info were found. Check your 'access_token' param."
         );
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function registerUserCredentials(
+        AccessTokenRepository $accessTokenRepository,
+        User $user,
+        Request $request
+    ) {
+        $tokenModel = $accessTokenRepository->extractInfo($this->retrieveTokenFromHeader($request));
+
+        // TODO: need to implement check for client application trust mode.
+        if ($tokenModel && $tokenModel->client_id) {
+            $user->load($request->getBodyParams(), '');
+            $user->save();
+            return $user;
+        }
+
+        throw new InvalidCallException("Only applications allowed to access this resource.");
     }
 
     /**

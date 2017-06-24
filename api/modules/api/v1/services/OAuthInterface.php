@@ -2,6 +2,7 @@
 
 namespace api\modules\api\v1\services;
 
+use api\modules\api\v1\models\User;
 use yii\web\Request;
 use yii\web\NotFoundHttpException;
 use yii\web\BadRequestHttpException;
@@ -45,5 +46,19 @@ interface OAuthInterface
     public function retrieveTokenInfo(
         Request $request,
         AccessTokenRepository $accessTokenRepository
+    );
+
+    /**
+     * Saves user credentials.
+     *
+     * @param AccessTokenRepository $accessTokenRepository
+     * @param User $user
+     * @param Request $request
+     * @return mixed
+     */
+    public function registerUserCredentials(
+        AccessTokenRepository $accessTokenRepository,
+        User $user,
+        Request $request
     );
 }
