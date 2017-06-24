@@ -14,18 +14,15 @@ use api\modules\api\v1\models\AccessToken;
 class UserRepository extends ActiveQuery
 {
     /**
-     * Checks whether the user by provided username
-     * and password exists in storage
      *
      * @param string $username
      * @param string $hash
      * @return array|null|User
      */
-    public function findByUserCredentials($username, $hash)
+    public function findByUsername($username)
     {
         return $this->where([
             'username' => $username,
-            'password' => $hash
         ])->one();
     }
 }

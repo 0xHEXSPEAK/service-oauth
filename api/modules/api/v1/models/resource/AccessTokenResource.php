@@ -17,7 +17,7 @@ class AccessTokenResource extends AccessToken
     public function fields()
     {
         return [
-            'token',
+            'access_token' => 'token',
             'expires_in'
         ];
     }

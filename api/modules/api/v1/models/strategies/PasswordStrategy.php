@@ -54,18 +54,20 @@ class PasswordStrategy extends AbstractStrategy
      */
     public function generate(array $scopes)
     {
-        $user = $this->userRepository->findByUserCredentials(
-            $this->request->getBodyParam('username'),
-            $this->userSecurity->generatePasswordHash($this->request->getBodyParam('password'))
+        $user = $this->userRepository->findByUsername(
+            $this->request->getBodyParam('username')
         );
 
-        if ( ! isset($user)) {
-            throw new UserNotFound(
-                "User wasn't found. Check your username and/-or password credentials."
-            );
+        if (
+            isset($user) &&
+            $this->userSecurity->validatePassword($this->request->getBodyParam('password'), $user->password)
+        ) {
+            // TODO: Don't forget to change the array of scopes
+            return $this->accessTokenRepository->generate(null, $user->id, $scopes, 'password');
         }
 
-        // TODO: Don't forget to change the array of scopes
-        return $this->accessTokenRepository->generate(null, $user->id, $scopes, 'password');
+        throw new UserNotFound(
+            "User wasn't found. Check your username and/-or password credentials."
+        );
     }
 }
